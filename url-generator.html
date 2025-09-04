@@ -2,33 +2,69 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Analyse FEN — Lichess</title>
-  <link rel="stylesheet" href="style.css">
+  <title>FEN Generator</title>
+  <link rel="stylesheet" href="hub.css">
 </head>
 <body>
+  <h1>FEN Generator</h1>
 
-  <h1>Put your FEN below</h1>
-
-  <input type="text" id="fenInput" placeholder="Put a FEN!">
-  
-  <input type="text" id="noteInput" placeholder="Add a note (optional)">
+  <input type="text" id="fenInput" placeholder="Enter FEN ici">
+  <br>
 
   <div class="color-choice">
-    <label><input type="radio" name="color" value="white" checked> White's side</label>
-    <label><input type="radio" name="color" value="black"> Black's side</label>
+    <label><input type="radio" name="color" value="white" checked> White</label>
+    <label><input type="radio" name="color" value="black"> Black</label>
   </div>
 
-  <button id="generateBtn">Get URL!</button>
+  <input type="text" id="noteInput" placeholder="Note (optionnel)">
+  <br>
 
+  <button id="generateBtn">Save</button>
+
+  <h2>Saved URLs</h2>
   <div id="output"></div>
 
-<!-- Firebase App (globale) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<!-- Firestore (globale) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+  <script>
+    // Tableau local pour stocker les URLs
+    const urlHistory = [];
 
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      const fen = document.getElementById("fenInput").value.trim();
+      if (!fen) return;
 
-  <!-- Ton script JS -->
-  <script src="script.js"></script>
+      const color = document.querySelector('input[name="color"]:checked').value;
+      const fenUrl = fen.split(" ").join("_");
+      const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
+
+      const note = document.getElementById("noteInput").value.trim();
+
+      // Ajouter à l'historique local
+      urlHistory.push({ url: linkUrl, note: note });
+
+      // Reset inputs
+      document.getElementById("fenInput").value = '';
+      document.getElementById("noteInput").value = '';
+
+      renderList();
+    });
+
+    // Afficher la liste
+    function renderList() {
+      const listHTML = urlHistory.map((item, index) => `
+        <li>
+          <a href="${item.url}" target="_blank">${item.url}</a>
+          ${item.note ? `<span> — ${item.note}</span>` : ""}
+          <button onclick="deleteUrl(${index})">Delete</button>
+        </li>
+      `).join('');
+      document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
+    }
+
+    // Supprimer un item
+    function deleteUrl(index) {
+      urlHistory.splice(index, 1);
+      renderList();
+    }
+  </script>
 </body>
 </html>
