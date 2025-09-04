@@ -1,29 +1,10 @@
-/******************************************************
- * Script gestion FEN + Firebase Firestore (globaux)
- ******************************************************/
+// Charger l'historique depuis LocalStorage ou tableau vide
+const urlHistory = JSON.parse(localStorage.getItem('urlHistory') || '[]');
 
-// --- CONFIG FIREBASE ---
-// ⚠️ Mets ici les infos de ton projet Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyD0qB4wCP00n4lVGrSRK-JnKBtbmZ48Vvc",
-  authDomain: "fen-urls.firebaseapp.com",
-  projectId: "fen-urls",
-  storageBucket: "fen-urls.firebasestorage.app",
-  messagingSenderId: "1023372721889",
-  appId: "1:1023372721889:web:f26546444f8520ea7d81a0"
-};
+// Afficher la liste dès le départ
+renderList();
 
-// --- INIT FIREBASE ---
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// --- TABLEAU LOCAL POUR LES URLS ---
-const urlHistory = [];
-
-// --- AJOUTER UNE NOUVELLE URL ---
-document.getElementById('generateBtn').addEventListener('click', generate);
-
-function generate() {
+document.getElementById('generateBtn').addEventListener('click', () => {
   const fen = document.getElementById("fenInput").value.trim();
   if (!fen) return;
 
@@ -33,23 +14,19 @@ function generate() {
 
   const note = document.getElementById("noteInput").value.trim();
 
-  // Sauvegarde dans Firestore
-  db.collection("urls").add({
-    url: linkUrl,
-    note: note,
-    createdAt: new Date()
-  }).then(docRef => {
-    console.log("Ajouté avec ID:", docRef.id);
-  }).catch(error => {
-    console.error("Erreur Firebase:", error);
-  });
+  // Ajouter à l'historique
+  urlHistory.push({ url: linkUrl, note: note });
+
+  // Sauvegarder dans LocalStorage
+  localStorage.setItem('urlHistory', JSON.stringify(urlHistory));
 
   // Reset inputs
   document.getElementById("fenInput").value = '';
   document.getElementById("noteInput").value = '';
-}
 
-// --- AFFICHER LA LISTE ---
+  renderList();
+});
+
 function renderList() {
   const listHTML = urlHistory.map((item, index) => `
     <li>
@@ -58,33 +35,11 @@ function renderList() {
       <button onclick="deleteUrl(${index})">Delete</button>
     </li>
   `).join('');
-
   document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
 }
 
-// --- SUPPRIMER UNE URL ---
 function deleteUrl(index) {
-  const item = urlHistory[index];
-  if (!item) return;
-
-  db.collection("urls")
-    .where("url", "==", item.url)
-    .get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => doc.ref.delete());
-    })
-    .catch(error => console.error("Erreur suppression:", error));
+  urlHistory.splice(index, 1);
+  localStorage.setItem('urlHistory', JSON.stringify(urlHistory));
+  renderList();
 }
-
-// --- CHARGER EN TEMPS RÉEL DEPUIS FIREBASE ---
-window.onload = () => {
-  db.collection("urls")
-    .orderBy("createdAt", "desc")
-    .onSnapshot(snapshot => {
-      urlHistory.length = 0; // reset tableau local
-      snapshot.forEach(doc => {
-        urlHistory.push(doc.data());
-      });
-      renderList();
-    });
-};
