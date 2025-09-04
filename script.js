@@ -1,4 +1,3 @@
-// --- CONFIG FIREBASE ---
 const firebaseConfig = {
   apiKey: "AIzaSyD0qB4wCP00n4lVGrSRK-JnKBtbmZ48Vvc",
   authDomain: "fen-urls.firebaseapp.com",
@@ -8,13 +7,11 @@ const firebaseConfig = {
   appId: "1:1023372721889:web:f26546444f8520ea7d81a0"
 };
 
-// --- INIT FIREBASE ---
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 const urlHistory = [];
 
-// --- Ajouter un FEN ---
 document.getElementById('generateBtn').addEventListener('click', () => {
   const fen = document.getElementById("fenInput").value.trim();
   if (!fen) return;
@@ -34,7 +31,6 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   }).catch(err => console.error(err));
 });
 
-// --- Charger en temps réel ---
 db.collection("urls")
   .orderBy("createdAt", "desc")
   .onSnapshot(snapshot => {
@@ -43,7 +39,6 @@ db.collection("urls")
     renderList();
   });
 
-// --- Afficher la liste ---
 function renderList() {
   const listHTML = urlHistory.map((item, index) => `
     <li>
@@ -55,7 +50,6 @@ function renderList() {
   document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
 }
 
-// --- Supprimer une URL ---
 function deleteUrl(index) {
   const item = urlHistory[index];
   if (!item) return;
