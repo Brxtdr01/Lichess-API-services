@@ -10,23 +10,24 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <h1>FEN Generator</h1>
+  <div class="container">
+    <h1>FEN Generator</h1>
 
-  <input type="text" id="fenInput" placeholder="Enter FEN ici">
-  <br>
+    <div class="input-group">
+      <input type="text" id="fenInput" placeholder="Enter FEN ici">
+      <input type="text" id="noteInput" placeholder="Note (optionnel)">
+    </div>
 
-  <div class="color-choice">
-    <label><input type="radio" name="color" value="white" checked> White</label>
-    <label><input type="radio" name="color" value="black"> Black</label>
+    <div class="color-choice">
+      <label><input type="radio" name="color" value="white" checked> White</label>
+      <label><input type="radio" name="color" value="black"> Black</label>
+    </div>
+
+    <button id="generateBtn">Save</button>
+
+    <h2>Saved URLs</h2>
+    <div id="output"></div>
   </div>
-
-  <input type="text" id="noteInput" placeholder="Note (optionnel)">
-  <br>
-
-  <button id="generateBtn">Save</button>
-
-  <h2>Saved URLs</h2>
-  <div id="output"></div>
 
   <script src="script.js"></script>
 </body>
