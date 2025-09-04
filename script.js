@@ -1,34 +1,42 @@
-// Tableau pour stocker les URLs générées
+// Tableau pour stocker les entrées (URL + note)
 const urlHistory = [];
 
-// On récupère le bouton et on ajoute l'événement click
+// Écouteur sur le bouton
 document.getElementById('generateBtn').addEventListener('click', generate);
 
 function generate() {
-  // Récupérer le FEN depuis l'input
   const fen = document.getElementById("fenInput").value.trim();
-  if (!fen) return; // Si vide, ne rien faire
+  if (!fen) return;
 
-  // Récupérer la couleur sélectionnée
   const color = document.querySelector('input[name="color"]:checked').value;
-
-  // Transformer le FEN pour Lichess (espaces -> underscores)
   const fenUrl = fen.split(" ").join("_");
-
-  // Créer l'URL d'analyse
   const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
 
-  // Ajouter l'URL à l'historique
-  urlHistory.push(linkUrl);
+  const note = document.getElementById("noteInput").value.trim();
 
-  // Générer le HTML de la liste des URLs
-  const listHTML = urlHistory.map(url => 
-    `<li><a href="${url}" target="_blank">${url}</a></li>`
-  ).join('');
+  // Ajouter un objet dans l'historique
+  urlHistory.push({ url: linkUrl, note });
 
-  // Afficher la liste dans le div output
-  document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
+  renderList();
 
-  // Vider l'input pour la prochaine saisie
+  // Reset inputs
   document.getElementById("fenInput").value = '';
+  document.getElementById("noteInput").value = '';
+}
+
+function renderList() {
+  const listHTML = urlHistory.map((item, index) => `
+    <li>
+      <a href="${item.url}" target="_blank">${item.url}</a>
+      ${item.note ? `<span> — ${item.note}</span>` : ""}
+      <button onclick="deleteUrl(${index})">Delete</button>
+    </li>
+  `).join('');
+
+  document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
+}
+
+function deleteUrl(index) {
+  urlHistory.splice(index, 1); // Supprimer l'élément du tableau
+  renderList(); // Re-afficher la liste
 }
