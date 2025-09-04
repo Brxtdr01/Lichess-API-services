@@ -1,0 +1,43 @@
+body {
+  background: gold;
+  color: #000;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+input,
+button,
+label {
+  font-size: 1rem;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 70%;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.color-choice {
+  margin: 10px 0 20px 0;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #1f7a8c;
+  color: white;
+  cursor: pointer;
+}
+
+a {
+  display: block;
+  margin-top: 15px;
+  color: #1f7a8c;
+  font-weight: bold;
+  text-decoration: none;
+  word-break: break-all;
+}
