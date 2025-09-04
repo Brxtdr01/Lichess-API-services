@@ -25,3 +25,20 @@ h1 {
 .hub-buttons button:hover {
   background: #145f6e;
 }
+
+.custom-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #38bdf8, #06b6d4);
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
