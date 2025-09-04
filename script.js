@@ -12,7 +12,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// --- TABLEAU LOCAL ---
 const urlHistory = [];
 
 // --- Ajouter un FEN ---
@@ -25,7 +24,6 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
   const note = document.getElementById("noteInput").value.trim();
 
-  // Sauvegarde dans Firestore
   db.collection("urls").add({
     url: linkUrl,
     note: note,
