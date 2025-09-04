@@ -1,17 +1,24 @@
-document.getElementById('analyzeBtn').addEventListener('click', generate);
+// tableau pour stocker les FEN
+const fenHistory = [];
 
 function generate() {
   const fen = document.getElementById("fenInput").value.trim();
   if (!fen) return;
 
-  // couleur choisie
   const color = document.querySelector('input[name="color"]:checked').value;
-
-  // lien partageable
   const fenUrl = fen.split(" ").join("_");
   const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
 
-  document.getElementById("output").innerHTML = `
-    <a href="${linkUrl}" target="_blank">${linkUrl}</a>
-  `;
+  // ajouter à l'historique
+  fenHistory.push({ fen, color, link: linkUrl });
+
+  // générer la liste HTML
+  const listHTML = fenHistory.map(item => 
+    `<li><a href="${item.link}" target="_blank">${item.fen} (${item.color})</a></li>`
+  ).join('');
+
+  document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
+
+  // vider l'input si tu veux
+  document.getElementById("fenInput").value = '';
 }
