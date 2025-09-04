@@ -1,9 +1,9 @@
 /******************************************************
- * Script gestion FEN + Firebase Firestore
+ * Script gestion FEN + Firebase Firestore (globaux)
  ******************************************************/
 
 // --- CONFIG FIREBASE ---
-// ⚠️ Mets ici les infos de ton projet Firebase (console → Paramètres → Config SDK web)
+// ⚠️ Mets ici les infos de ton projet Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD0qB4wCP00n4lVGrSRK-JnKBtbmZ48Vvc",
   authDomain: "fen-urls.firebaseapp.com",
