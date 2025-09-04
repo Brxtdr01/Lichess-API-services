@@ -84,11 +84,12 @@ li {
   padding: 12px 15px;
   border-radius: 12px;
   display: flex;
-  align-items: center;
-  min-width: 220px;
-  max-width: 250px;
+  flex-direction: column; /* empile lien + bouton */
+  align-items: flex-start;
+  width: 250px;        /* largeur fixe */
+  max-height: 80px;    /* hauteur fixe */
+  overflow: hidden;
   box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  word-break: break-word;
   transition: transform 0.2s;
 }
 
@@ -101,12 +102,30 @@ li a {
   color: #38bdf8;
   text-decoration: none;
   font-weight: 500;
-  flex: 1;
-  margin-right: 10px;
-  font-size: 0.9rem;
-  overflow-wrap: break-word;
+  font-size: 0.85rem;
+  width: 100%;
+  white-space: nowrap;     /* FEN sur une ligne */
+  overflow-x: auto;        /* scroll horizontal si long */
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
 }
 
+li button {
+  align-self: flex-end;
+  background: #ef4444;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+li button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
 
 @media (max-width: 500px) {
   .container { padding: 20px; }
