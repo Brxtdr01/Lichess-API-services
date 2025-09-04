@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Analyse FEN — Lichess</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Put your FEN belowLichess</h1>
+
+  <input type="text" id="fenInput" placeholder="Put a FEN!">
+
+  <div class="color-choice">
+    <label><input type="radio" name="color" value="white" checked> White's side</label>
+    <label><input type="radio" name="color" value="black"> Black's side</label>
+  </div>
+
+  <button onclick="generate()">Analyser</button>
+
+  <div id="output"></div>
+
+  <script>
+    function generate() {
+      const fen = document.getElementById("fenInput").value.trim();
+      if (!fen) return;
+
+      // couleur choisie
+      const color = document.querySelector('input[name="color"]:checked').value;
+
+      // lien partageable
+      const fenUrl = fen.split(" ").join("_");
+      const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
+
+      document.getElementById("output").innerHTML = `
+        <a href="${linkUrl}" target="_blank">${linkUrl}</a>
+      `;
+    }
+  </script>
+
+</body>
+</html>
