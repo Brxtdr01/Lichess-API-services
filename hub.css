@@ -1,0 +1,27 @@
+body {
+  background: black;
+  color: #fff;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.hub-buttons button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: none;
+  background: DarkOrange;
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+  transition: background 0.3s;
+}
+
+.hub-buttons button:hover {
+  background: #145f6e;
+}
