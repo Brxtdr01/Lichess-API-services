@@ -73,23 +73,22 @@ button:hover {
 
 #output {
   margin-top: 30px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
 }
 
 li {
   background: #334155;
   padding: 12px 15px;
-  margin-bottom: 12px;
   border-radius: 12px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  min-width: 220px;
+  max-width: 250px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  word-break: break-all;
+  word-break: break-word;
   transition: transform 0.2s;
 }
 
@@ -104,23 +103,10 @@ li a {
   font-weight: 500;
   flex: 1;
   margin-right: 10px;
-}
-
-li button {
-  background: #ef4444;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
   font-size: 0.9rem;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
+  overflow-wrap: break-word;
 }
 
-li button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-}
 
 @media (max-width: 500px) {
   .container { padding: 20px; }
