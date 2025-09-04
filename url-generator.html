@@ -24,47 +24,6 @@
   <h2>Saved URLs</h2>
   <div id="output"></div>
 
-  <script>
-    // Tableau local pour stocker les URLs
-    const urlHistory = [];
-
-    document.getElementById('generateBtn').addEventListener('click', () => {
-      const fen = document.getElementById("fenInput").value.trim();
-      if (!fen) return;
-
-      const color = document.querySelector('input[name="color"]:checked').value;
-      const fenUrl = fen.split(" ").join("_");
-      const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
-
-      const note = document.getElementById("noteInput").value.trim();
-
-      // Ajouter à l'historique local
-      urlHistory.push({ url: linkUrl, note: note });
-
-      // Reset inputs
-      document.getElementById("fenInput").value = '';
-      document.getElementById("noteInput").value = '';
-
-      renderList();
-    });
-
-    // Afficher la liste
-    function renderList() {
-      const listHTML = urlHistory.map((item, index) => `
-        <li>
-          <a href="${item.url}" target="_blank">${item.url}</a>
-          ${item.note ? `<span> — ${item.note}</span>` : ""}
-          <button onclick="deleteUrl(${index})">Delete</button>
-        </li>
-      `).join('');
-      document.getElementById("output").innerHTML = `<ul>${listHTML}</ul>`;
-    }
-
-    // Supprimer un item
-    function deleteUrl(index) {
-      urlHistory.splice(index, 1);
-      renderList();
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
