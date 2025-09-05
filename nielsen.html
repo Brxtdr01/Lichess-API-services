@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>URL Generator</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase bails -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>URL Generator</h1>
+
+    <div class="input-group">
+      <input type="text" id="fenInput" placeholder="Enter FEN here">
+      <input type="text" id="noteInput" placeholder="Note (optionnel)">
+    </div>
+
+    <div class="color-choice">
+      <label><input type="radio" name="color" value="white" checked> White</label>
+      <label><input type="radio" name="color" value="black"> Black</label>
+    </div>
+
+    <button id="generateBtn">Save</button>
+
+    <h2>Saved URLs</h2>
+    <div id="output"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
