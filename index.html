@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChoiceHub</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: black;
+      margin: 0;
+      height: 1000px;
+      position: relative;
+    }
+
+    .hub-container {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      width: 600px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 50px;
+      margin: 0;
+    }
+
+    
+    .button-wrapper {
+      display: flex;
+      flex-direction: column; /* vertical */
+      gap: 30px;              /* espac entre les boutons */
+      margin-top: 100px;       /* espace entre le button et le titre */
+    }
+
+    .hub-button {
+      background-color: DarkOrange; /* Comme ph non ? */
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 24px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .hub-button:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="hub-container">
+    <h1>
+      <span style="color: white;">Tool</span><span style="color: darkorange;">Hub</span>
+    </h1>
+
+    <div class="button-wrapper">
+      <a class="hub-button" href="url-generator-hub.html" target="_blank">URL Generator</a>
+       <a class="hub-button" href="tournament-creator.html" target="_blank">tournament creator</a>
+
+    </div>
+  </div>
+</body>
+</html>
