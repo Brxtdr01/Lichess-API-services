@@ -35,41 +35,41 @@
     <form id="tform" onsubmit="event.preventDefault();createTournament()">
       <fieldset>
         <legend>Authentification</legend>
-        <label>Token API <input id="token" type="password" required></label>
-        <label><input id="remember" type="checkbox"> Mémoriser localement</label>
+        <label>API token <input id="token" type="password" required></label>
+        <label><input id="remember" type="checkbox"> Localy save ?</label>
       </fieldset>
 
       <fieldset>
         <legend>Essentiels</legend>
         <label>Nom <input id="name"></label>
         <div class="row">
-          <label>Minutes <input id="clockTime" type="number" value="3" step="0.25"></label>
-          <label>Incrément <input id="clockInc" type="number" value="2"></label>
+          <label>Time control <input id="clockTime" type="number" value="3" step="0.25"></label>
+          <label>Increment <input id="clockInc" type="number" value="2"></label>
           <label>Durée (min) <input id="minutes" type="number" value="45"></label>
         </div>
         <div class="row">
-          <label>Variante
+          <label>Variant
             <select id="variant">
               <option>standard</option><option>chess960</option><option>crazyhouse</option>
               <option>antichess</option><option>atomic</option><option>horde</option>
               <option>kingOfTheHill</option><option>racingKings</option><option>threeCheck</option>
             </select>
           </label>
-          <label>Coté <select id="rated"><option>true</option><option>false</option></select></label>
+          <label>rated <select id="rated"><option>true</option><option>false</option></select></label>
           <label>Berserk <select id="berserk"><option>true</option><option>false</option></select></label>
           <label>Streak <select id="streak"><option>true</option><option>false</option></select></label>
         </div>
-        <label><input id="useStart" type="checkbox"> Programmer une date</label>
+        <label><input id="useStart" type="checkbox"> When will the tournament is gonna start ?</label>
         <div class="row">
-          <label id="waitWrap">Attente (min) <input id="wait" type="number" value="5"></label>
+          <label id="waitWrap">Only mins for now <input id="wait" type="number" value="5"></label>
           <label id="dateWrap" style="display:none">Date <input id="startDate" type="datetime-local"></label>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>Accès & conditions</legend>
+        <legend>Acces and conditions</legend>
         <div class="row">
-          <label>TeamId <input id="team"></label>
+          <label>TeamId(e.g DarkOnTeams) <input id="team"></label>
           <label>Chat <select id="chat"><option>true</option><option>false</option></select></label>
         </div>
         <div class="row">
@@ -83,10 +83,11 @@
         </div>
         <label>Description <textarea id="desc" rows="2"></textarea></label>
       </fieldset>
+<label>Number of tournaments <input id="nbTournaments" type="number" value="1" min="1"></label>
 
       <div class="actions">
         <button type="button" class="secondary" onclick="preview()">Aperçu</button>
-        <button type="submit">Créer</button>
+        <button type="submit">Create!</button>
       </div>
     </form>
 
