@@ -2,16 +2,20 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>URL Generator</title>
+  <title>FEN Generator</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase bails -->
+  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <div class="back-button">
+    <button onclick="location.href='index.html'">Back</button>
+  </div>
+
   <div class="container">
-    <h1>URL Generator</h1>
+    <h1>FEN Generator</h1>
 
     <div class="input-group">
       <input type="text" id="fenInput" placeholder="Enter FEN here">
