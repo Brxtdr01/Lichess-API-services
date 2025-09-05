@@ -1,1 +1,2 @@
-https://brxtdr01.github.io/Lichess-analys/
+
+(https://brxtdr01.github.io/Lichess-API-services/)
