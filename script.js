@@ -10,6 +10,20 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// --- Choix dynamique de la collection selon la page ---
+const pageName = window.location.pathname.split("/").pop().toLowerCase(); // boris.html ou nielsen.html
+let collectionName;
+
+if (pageName === "boris.html") {
+  collectionName = "urls_boris";
+} else if (pageName === "nielsen.html") {
+  collectionName = "urls_nielsen"; // minuscule
+} else {
+  collectionName = "urls_misc"; // fallback
+}
+
+const urlRef = db.collection(collectionName);
+
 const urlHistory = [];
 
 document.getElementById('generateBtn').addEventListener('click', () => {
@@ -21,7 +35,7 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const linkUrl = `https://lichess.org/analysis/${fenUrl}?color=${color}`;
   const note = document.getElementById("noteInput").value.trim();
 
-  db.collection("urls").add({
+  urlRef.add({
     url: linkUrl,
     note: note,
     createdAt: new Date()
@@ -31,7 +45,7 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   }).catch(err => console.error(err));
 });
 
-db.collection("urls")
+urlRef
   .orderBy("createdAt", "desc")
   .onSnapshot(snapshot => {
     urlHistory.length = 0;
@@ -54,7 +68,7 @@ function deleteUrl(index) {
   const item = urlHistory[index];
   if (!item) return;
 
-  db.collection("urls")
+  urlRef
     .where("url", "==", item.url)
     .get()
     .then(snapshot => {
