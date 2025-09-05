@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Lichess Tournament Creator — Deluxe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {margin:0;font-family:sans-serif;background:#0b1220;color:#e5e7eb}
+    header {padding:12px 20px;background:#0a1020;border-bottom:1px solid #1f2a44}
+    h1 {margin:0;font-size:18px}
+    main {padding:16px;display:grid;gap:16px;grid-template-columns:1fr 1fr}
+    form,section>fieldset {
+      background:#121a2b;border:1px solid #1f2a44;border-radius:10px;
+      padding:12px;display:grid;gap:10px
+    }
+    fieldset{border:1px solid #22314f;border-radius:8px}
+    legend{color:#cbd5e1;font-size:13px}
+    label{font-size:13px;display:block}
+    input,select,textarea{
+      width:100%;margin-top:3px;padding:6px;border-radius:6px;
+      border:1px solid #24324f;background:#0f1628;color:#e5e7eb
+    }
+    .row{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+    .actions{display:flex;gap:8px;justify-content:flex-end}
+    button{padding:8px 12px;border-radius:6px;cursor:pointer;border:none}
+    button.secondary{background:#17213a;color:#eee}
+    button:not(.secondary){background:#2563eb;color:#fff}
+    pre{background:#0f1628;border:1px solid #22314f;border-radius:8px;padding:8px;white-space:pre-wrap;max-height:350px;overflow:auto}
+    @media(max-width:900px){main{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><h1>Créer un tournoi Lichess</h1></header>
+  <main>
+    <form id="tform" onsubmit="event.preventDefault();createTournament()">
+      <fieldset>
+        <legend>Authentification</legend>
+        <label>Token API <input id="token" type="password" required></label>
+        <label><input id="remember" type="checkbox"> Mémoriser localement</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Essentiels</legend>
+        <label>Nom <input id="name"></label>
+        <div class="row">
+          <label>Minutes <input id="clockTime" type="number" value="3" step="0.25"></label>
+          <label>Incrément <input id="clockInc" type="number" value="2"></label>
+          <label>Durée (min) <input id="minutes" type="number" value="45"></label>
+        </div>
+        <div class="row">
+          <label>Variante
+            <select id="variant">
+              <option>standard</option><option>chess960</option><option>crazyhouse</option>
+              <option>antichess</option><option>atomic</option><option>horde</option>
+              <option>kingOfTheHill</option><option>racingKings</option><option>threeCheck</option>
+            </select>
+          </label>
+          <label>Coté <select id="rated"><option>true</option><option>false</option></select></label>
+          <label>Berserk <select id="berserk"><option>true</option><option>false</option></select></label>
+          <label>Streak <select id="streak"><option>true</option><option>false</option></select></label>
+        </div>
+        <label><input id="useStart" type="checkbox"> Programmer une date</label>
+        <div class="row">
+          <label id="waitWrap">Attente (min) <input id="wait" type="number" value="5"></label>
+          <label id="dateWrap" style="display:none">Date <input id="startDate" type="datetime-local"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Accès & conditions</legend>
+        <div class="row">
+          <label>TeamId <input id="team"></label>
+          <label>Chat <select id="chat"><option>true</option><option>false</option></select></label>
+        </div>
+        <div class="row">
+          <label>Min Elo <input id="minElo" type="number"></label>
+          <label>Max Elo <input id="maxElo" type="number"></label>
+          <label>Nb parties <input id="nbGames" type="number"></label>
+        </div>
+        <div class="row">
+          <label>Password <input id="pass"></label>
+          <label>FEN <input id="fen"></label>
+        </div>
+        <label>Description <textarea id="desc" rows="2"></textarea></label>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" class="secondary" onclick="preview()">Aperçu</button>
+        <button type="submit">Créer</button>
+      </div>
+    </form>
+
+    <section>
+      <fieldset><legend>Résultat</legend><pre id="out">En attente…</pre></fieldset>
+      <fieldset><legend>cURL</legend><pre id="curl">—</pre></fieldset>
+    </section>
+  </main>
+
+<script>
+const tokenInput=document.getElementById("token"),remember=document.getElementById("remember");
+if(localStorage.lichess_token){tokenInput.value=localStorage.lichess_token;remember.checked=true}
+remember.onchange=()=>remember.checked?localStorage.lichess_token=tokenInput.value:localStorage.removeItem("lichess_token");
+tokenInput.oninput=()=>{if(remember.checked)localStorage.lichess_token=tokenInput.value}
+
+const useStart=document.getElementById("useStart"),waitWrap=document.getElementById("waitWrap"),dateWrap=document.getElementById("dateWrap");
+useStart.onchange=()=>{waitWrap.style.display=useStart.checked?"none":"";dateWrap.style.display=useStart.checked?"": "none"}
+
+function collect(){
+  const v=id=>document.getElementById(id).value.trim(),p=new URLSearchParams();
+  if(v("name"))p.set("name",v("name"));
+  p.set("clockTime",v("clockTime"));p.set("clockIncrement",v("clockInc"));p.set("minutes",v("minutes"));
+  if(useStart.checked&&v("startDate"))p.set("startDate",new Date(v("startDate")).getTime()); else if(v("wait"))p.set("waitMinutes",v("wait"));
+  [["variant","variant"],["rated","rated"],["berserk","berserkable"],["streak","streakable"],["chat","hasChat"]]
+    .forEach(([id,k])=>p.set(k,v(id)));
+  [["fen","position"],["pass","password"],["desc","description"]].forEach(([id,k])=>{if(v(id))p.set(k,v(id))});
+  if(v("team"))p.set("conditions.teamMember.teamId",v("team"));
+  if(v("minElo"))p.set("conditions.minRating.rating",v("minElo"));
+  if(v("maxElo"))p.set("conditions.maxRating.rating",v("maxElo"));
+  if(v("nbGames"))p.set("conditions.nbRatedGame.nb",v("nbGames"));
+  return p
+}
+function buildCurl(p){const t=tokenInput.value.trim();return `curl -X POST https://lichess.org/api/tournament \\
+ -H "Authorization: Bearer ${t}" -H "Content-Type: application/x-www-form-urlencoded" \\
+ ${[...p.entries()].map(([k,v])=>"--data-urlencode "+JSON.stringify(k+"="+v)).join(" \\\n ")}`}
+function preview(){const p=collect(),obj={};for(const[k,v]of p)obj[k]=v;
+  out.textContent="Aperçu:\n"+JSON.stringify(obj,null,2);curl.textContent=buildCurl(p)}
+async function createTournament(){
+  out.textContent="Création…";const t=tokenInput.value.trim();if(!t){out.textContent="Token manquant";return}
+  const p=collect();curl.textContent=buildCurl(p)
+  try{const r=await fetch("https://lichess.org/api/tournament",{method:"POST",headers:{
+    "Authorization":"Bearer "+t,"Content-Type":"application/x-www-form-urlencoded"},body:p});
+    const txt=await r.text();try{const j=JSON.parse(txt),id=j.id||j.tourId,url=id?"https://lichess.org/tournament/"+id:j.url;
+      out.innerHTML="<span style='color:lime'>OK</span>\n"+JSON.stringify(j,null,2)+(url?`\n\nLien: <a href="${url}" target="_blank">${url}</a>`:"")}
+    catch{out.textContent=r.ok?txt:"Erreur "+r.status+":\n"+txt}}
+  catch(e){out.textContent="Erreur réseau: "+e}
+}
+</script>
+</body>
+</html>
